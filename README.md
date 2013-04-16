@@ -46,8 +46,8 @@ You can subscribe to the Facebook event "scroll" or listen to the dom event "fb-
 
 ## Parameters
 
-- topPercent [integer] (0 - 100) - Percentage of how far down the top of the page is in view to the user. Example: When the user is scrolled to the top of the page it will be 0.
-- bottomPercent [integer] (0 - 100) - Percentage of how far down the bottom of the page is in view to the user. Example: When the user is scrolled to the bottom of the page it will be 100.
+- **topPercent** *integer* (0 - 100) - Percentage of how far down the top of the page is in view to the user. Example: When the user is scrolled to the top of the page it will be 0.
+- **bottomPercent** *integer* (0 - 100) - Percentage of how far down the bottom of the page is in view to the user. Example: When the user is scrolled to the bottom of the page it will be 100.
 
 ## Facebook Javascript SDK subscribing to custom event
 

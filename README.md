@@ -46,14 +46,14 @@ You can subscribe to the Facebook event "scroll" or listen to the dom event "fb-
 
 ## Parameters
 
-- topPercent <integer> (0 - 100) - Percentage of how far down the top of the page is in view to the user. Example: When the user is scrolled to the top of the page it will be 0.
-- bottomPercent <integer> (0 - 100) - Percentage of how far down the bottom of the page is in view to the user. Example: When the user is scrolled to the bottom of the page it will be 100.
+- topPercent [integer] (0 - 100) - Percentage of how far down the top of the page is in view to the user. Example: When the user is scrolled to the top of the page it will be 0.
+- bottomPercent [integer] (0 - 100) - Percentage of how far down the bottom of the page is in view to the user. Example: When the user is scrolled to the bottom of the page it will be 100.
 
 ## Facebook Javascript SDK subscribing to custom event
 
 Warning: this causes the following message to appear in the console "The method FB.Event.fire is not officially supported by Facebook and access to it will soon be removed."
 
-```html
+```javascript
 	FB.Event.subscribe('scroll', function(topPercent, bottomPercent){
 		console.log('scroll', topPercent, bottomPercent);
 	});
@@ -61,7 +61,7 @@ Warning: this causes the following message to appear in the console "The method 
 
 ## jQuery
 
-```html
+```javascript
 	jQuery(document).on('fb-scroll', function(evt, topPercent, bottomPercent){
 		console.log('scroll', topPercent, bottomPercent);
 	});
@@ -69,7 +69,7 @@ Warning: this causes the following message to appear in the console "The method 
 
 ## Real world example "Infinite Scroll"
 
-```html
+```javascript
 	jQuery(document).on('fb-scroll', function(evt, topPercent, bottomPercent){
 		if(bottomPercent == 100){
 			// load more content

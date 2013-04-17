@@ -65,11 +65,11 @@
 		var _oldTopPercent = 0;
 		var _oldBottomPercent = 0;
 		var _scrollTimer = null;
-		var _scrollTimerMilliseconds = 1000;
+		var _scrollTimerMilliseconds = 500;
 		var _headerGapToIFrame = 28;
 		var _init = function(){
 			if (typeof window.fbAsyncInit !== 'function') {
-				alert('window.fbAsyncInit does not exit yet? Place fb-events.js just after your window.fbAsyncInit function!');
+				alert('window.fbAsyncInit does not exit yet? Place fb-scroll.js just after your window.fbAsyncInit function!');
 				return;
 			}
 			var _oldfbAsyncInit = window.fbAsyncInit;
@@ -87,6 +87,7 @@
 					alert('FB.Canvas.getPageInfo does not exist?');
 					return;
 				}
+				_poll();
 				_scrollTimer = setInterval(_poll, _scrollTimerMilliseconds);
 			}
 		};

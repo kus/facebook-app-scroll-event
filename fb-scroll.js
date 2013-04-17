@@ -2,12 +2,29 @@
  * Scroll event for Facebook Apps using Facebook Javascript SDK
  *
  * Event parameters:
- * topPercent <integer> (0 - 100)
- * Percentage of how far down the top of the page is in view to the user.
+ * pageHeight <integer> (0 - 100)
+ * Height of your app in pixels
+ *
+ * viewportHeight <integer> (0 - 100)
+ * The height of your app visible in the viewport (removes floating Facebook
+ * header and static header from reported viewport height)
+ *
+ * viewportTop <integer> (0 - 100)
+ * How many pixels down the page the top of the viewport is
  * Example: When the user is scrolled to the top of the page it will be 0
  *
- * bottomPercent <integer> (0 - 100)
- * Percentage of how far down the bottom of the page is in view to the user
+ * viewportBottom <integer> (0 - 100)
+ * How many pixels down the page the bottom of the viewport is
+ *
+ * viewportTopPercent <integer> (0 - 100)
+ * Percentage of how far down the top of the viewport is on the page
+ * Example: When the user is scrolled to the top of the page it will be 0
+ *
+ * viewportMiddlePercent <integer> (0 - 100)
+ * Percentage of how far down the middle of the viewport is on the page
+ *
+ * viewportBottomPercent <integer> (0 - 100)
+ * Percentage of how far down the bottom of the viewport is on the page
  * Example: When the user is scrolled to the bottom of the page it will be 100
  *
  * Usage:
@@ -18,13 +35,20 @@
  * (Warning: this causes the following message to appear in the console:
  * "The method FB.Event.fire is not officially supported by Facebook and access
  * to it will soon be removed.")
- * FB.Event.subscribe('scroll', function(topPercent, bottomPercent){
- *     console.log('scroll', topPercent, bottomPercent);
+ * FB.Event.subscribe('scroll', function(info){
+ *     console.log('scroll', info);
  * });
  *
  * jQuery:
- * jQuery(document).on('fb-scroll', function(evt, topPercent, bottomPercent){
- *     console.log('scroll', topPercent, bottomPercent);
+ * jQuery(document).on('fb-scroll', function(evt, info){
+ *     console.log('scroll', info);
+ * });
+ *
+ * Real world example "Infinite Scroll":
+ * jQuery(document).on('fb-scroll', function(evt, info){
+ *     if(info.viewportBottomPercent == 100){
+ *         // load more content
+ *     }
  * });
  *
  * Copyright (c) 2012 Blake Kus (http://blakek.us)
@@ -68,29 +92,38 @@
 		};
 		var _poll = function() {
 			window.FB.Canvas.getPageInfo(function(info) {
-				var browserHeight = info.clientHeight,
+				var viewportHeight = info.clientHeight,
 					floatingHeaderSize = info.offsetTop - _headerGapToIFrame,
-					scrollTop = info.scrollTop;
-				if (scrollTop < _headerGapToIFrame) {
+					viewportTop = info.scrollTop;
+				if (viewportTop < _headerGapToIFrame) {
 					// 141px header
-					browserHeight -= floatingHeaderSize + (_headerGapToIFrame - scrollTop);
+					viewportHeight -= floatingHeaderSize + (_headerGapToIFrame - viewportTop);
 				} else {
 					// 113px floating header
-					browserHeight -= floatingHeaderSize;
+					viewportHeight -= floatingHeaderSize;
 				}
-				var scrollBottom = scrollTop + browserHeight;
-				var height = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
-				var topPercent = Math.ceil(scrollTop / height * 100);
-				var bottomPercent = Math.min(Math.ceil(scrollBottom / height * 100), 100);
-				if (topPercent != _oldTopPercent || bottomPercent != _oldBottomPercent) {
-					_oldTopPercent = topPercent;
-					_oldBottomPercent = bottomPercent;
+				var viewportBottom = viewportTop + viewportHeight;
+				var pageHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+				var viewportTopPercent = Math.ceil(viewportTop / pageHeight * 100);
+				var viewportBottomPercent = Math.min(Math.ceil(viewportBottom / pageHeight * 100), 100);
+				if (viewportTopPercent != _oldTopPercent || viewportBottomPercent != _oldBottomPercent) {
+					_oldTopPercent = viewportTopPercent;
+					_oldBottomPercent = viewportBottomPercent;
+					var obj = {
+						'pageHeight': pageHeight,
+						'viewportHeight': viewportHeight,
+						'viewportTop': viewportTop,
+						'viewportBottom': viewportBottom,
+						'viewportTopPercent': viewportTopPercent,
+						'viewportMiddlePercent': Math.ceil(viewportTopPercent + (viewportBottomPercent / 2 - viewportTopPercent)),
+						'viewportBottomPercent': viewportBottomPercent
+					};
 					// FB.Event.fire creates a console message "The method FB.Event.fire is not officially supported by Facebook and access to it will soon be removed."
 					// To avoid it, you can subscribe to the event "fb-scroll" with jQuery
 					if (typeof jQuery === 'function') {
-						jQuery(document).trigger('fb-scroll', [topPercent, bottomPercent]);
+						jQuery(document).trigger('fb-scroll', obj);
 					} else {
-						window.FB.Event.fire('scroll', topPercent, bottomPercent);
+						window.FB.Event.fire('scroll', obj);
 					}
 				}
 			});

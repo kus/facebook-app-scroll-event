@@ -2,7 +2,7 @@
 
 ## What does it do?
 
-In a Facebook App, there is no "scroll" event, so using this script allows you to subscribe to the Facebook event "scroll" or listen to the dom event "fb-scroll" and change the UI or trigger events based on the users current scroll position in your app.
+In a Facebook App, there is no "scroll" event (assuming you have the scrollbars hidden on your app, as most apps do), so using this script allows you to subscribe to a custom Facebook event "scroll" or listen to the dom event "fb-scroll" and change the UI or trigger events based on the users current scroll position in your app.
 
 ## Dependencies
 
@@ -27,7 +27,7 @@ Include this javascript file directly after your window.fbAsyncInit function and
 			// Additional initialization code such as adding Event Listeners goes here
 		};
 	</script>
-	<script type="text/javascript" src="/js/fb-event.js"></script>
+	<script type="text/javascript" src="/js/fb-scroll.js"></script>
 	<script>
 		// Load the SDK asynchronously
 		(function(d, s, id){
@@ -42,36 +42,41 @@ Include this javascript file directly after your window.fbAsyncInit function and
 
 # Usage
 
-You can subscribe to the Facebook event "scroll" or listen to the dom event "fb-scroll" which two parameters will be passed "topPercent" and "bottomPercent".
+You can subscribe to a custom Facebook event "scroll" or listen to the dom event "fb-scroll" which passes an object that contains scroll parameters.
 
 ## Parameters
 
-- **topPercent** *integer* (0 - 100) - Percentage of how far down the top of the page is in view to the user. Example: When the user is scrolled to the top of the page it will be 0.
-- **bottomPercent** *integer* (0 - 100) - Percentage of how far down the bottom of the page is in view to the user. Example: When the user is scrolled to the bottom of the page it will be 100.
+- **pageHeight** *integer* (0 - 100) - Height of your app in pixels.
+- **viewportHeight** *integer* (0 - 100) - The height of your app visible in the viewport (removes floating Facebook header and static header from reported viewport height).
+- **viewportTop** *integer* (0 - 100) - How many pixels down the page the top of the viewport is. Example: When the user is scrolled to the top of the page it will be 0.
+- **viewportBottom** *integer* (0 - 100) - How many pixels down the page the bottom of the viewport is.
+- **viewportTopPercent** *integer* (0 - 100) - Percentage of how far down the top of the viewport is on the page. Example: When the user is scrolled to the top of the page it will be 0.
+- **viewportMiddlePercent** *integer* (0 - 100) - Percentage of how far down the middle of the viewport is on the page.
+- **viewportBottomPercent** *integer* (0 - 100) - Percentage of how far down the bottom of the viewport is on the page. Example: When the user is scrolled to the bottom of the page it will be 100.
 
 ## Facebook Javascript SDK subscribing to custom event
 
 Warning: this causes the following message to appear in the console "The method FB.Event.fire is not officially supported by Facebook and access to it will soon be removed."
 
 ```javascript
-	FB.Event.subscribe('scroll', function(topPercent, bottomPercent){
-		console.log('scroll', topPercent, bottomPercent);
+	FB.Event.subscribe('scroll', function(info){
+		console.log('scroll', info);
 	});
 ```
 
 ## jQuery
 
 ```javascript
-	jQuery(document).on('fb-scroll', function(evt, topPercent, bottomPercent){
-		console.log('scroll', topPercent, bottomPercent);
+	jQuery(document).on('fb-scroll', function(evt, info){
+		console.log('scroll', info);
 	});
 ```
 
 ## Real world example "Infinite Scroll"
 
 ```javascript
-	jQuery(document).on('fb-scroll', function(evt, topPercent, bottomPercent){
-		if(bottomPercent == 100){
+	jQuery(document).on('fb-scroll', function(evt, info){
+		if(info.viewportBottomPercent == 100){
 			// load more content
 		}
 	});

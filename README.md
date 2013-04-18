@@ -49,9 +49,10 @@ You can subscribe to a custom Facebook event "scroll" or listen to the dom event
 - **pageHeight** *integer* (0 - 100) - Height of your app in pixels.
 - **viewportHeight** *integer* (0 - 100) - The height of your app visible in the viewport (removes floating Facebook header and static header from reported viewport height).
 - **viewportTop** *integer* (0 - 100) - How many pixels down the page the top of the viewport is. Example: When the user is scrolled to the top of the page it will be 0.
+- **viewportMiddle** *integer* (0 - 100) - How many pixels down the page the middle of the viewport is.
 - **viewportBottom** *integer* (0 - 100) - How many pixels down the page the bottom of the viewport is.
 - **viewportTopPercent** *integer* (0 - 100) - Percentage of how far down the top of the viewport is on the page. Example: When the user is scrolled to the top of the page it will be 0.
-- **viewportMiddlePercent** *integer* (0 - 100) - Percentage of how far down the middle of the viewport is on the page.
+- **viewportMiddlePercent** *integer* (0 - 100) - Percentage of how far down the middle of the viewport is on the page. Example: When the user is scrolled to the middle of the page it will be 50.
 - **viewportBottomPercent** *integer* (0 - 100) - Percentage of how far down the bottom of the viewport is on the page. Example: When the user is scrolled to the bottom of the page it will be 100.
 
 ## Facebook Javascript SDK subscribing to custom event

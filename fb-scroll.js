@@ -13,6 +13,9 @@
  * How many pixels down the page the top of the viewport is
  * Example: When the user is scrolled to the top of the page it will be 0
  *
+ * viewportMiddle <integer> (0 - 100)
+ * How many pixels down the page the middle of the viewport is
+ *
  * viewportBottom <integer> (0 - 100)
  * How many pixels down the page the bottom of the viewport is
  *
@@ -22,6 +25,7 @@
  *
  * viewportMiddlePercent <integer> (0 - 100)
  * Percentage of how far down the middle of the viewport is on the page
+ * Example: When the user is scrolled to the middle of the page it will be 50
  *
  * viewportBottomPercent <integer> (0 - 100)
  * Percentage of how far down the bottom of the viewport is on the page
@@ -103,8 +107,8 @@
 					// 113px floating header
 					viewportHeight -= floatingHeaderSize;
 				}
-				var viewportBottom = viewportTop + viewportHeight;
 				var pageHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+				var viewportBottom = Math.min(viewportTop + viewportHeight, pageHeight);
 				var viewportTopPercent = Math.ceil(viewportTop / pageHeight * 100);
 				var viewportBottomPercent = Math.min(Math.ceil(viewportBottom / pageHeight * 100), 100);
 				if (viewportTopPercent != _oldTopPercent || viewportBottomPercent != _oldBottomPercent) {
@@ -114,9 +118,10 @@
 						'pageHeight': pageHeight,
 						'viewportHeight': viewportHeight,
 						'viewportTop': viewportTop,
+						'viewportMiddle': Math.ceil(viewportTop + ((viewportBottom - viewportTop) / 2)),
 						'viewportBottom': viewportBottom,
 						'viewportTopPercent': viewportTopPercent,
-						'viewportMiddlePercent': Math.ceil(viewportTopPercent + (viewportBottomPercent / 2 - viewportTopPercent)),
+						'viewportMiddlePercent': Math.ceil(viewportTopPercent + ((viewportBottomPercent - viewportTopPercent) / 2)),
 						'viewportBottomPercent': viewportBottomPercent
 					};
 					// FB.Event.fire creates a console message "The method FB.Event.fire is not officially supported by Facebook and access to it will soon be removed."

@@ -2,7 +2,11 @@
 
 ## What does it do?
 
-In a Facebook App, there is no "scroll" event (assuming you have the scrollbars hidden on your app, as most apps do), so using this script allows you to subscribe to a custom Facebook event "scroll" or listen to the dom event "fb-scroll" and change the UI or trigger events based on the users current scroll position in your app.
+In a Facebook App, there is no "scroll" event (assuming you have the scrollbars hidden on your app, as most apps do), so using this script allows you to subscribe to a custom Facebook event "scroll" or listen to the custom event "fb-scroll" and change the UI or trigger events based on the users current scroll position in your app.
+
+## Updated to work outside of Facebook
+
+Now updated to support Facebook Mobile Apps ie: apps that are outside of Facebook and FB.Canvas.getPageInfo is not available. Please note, you must have scrollbars on for this to work!
 
 ## Dependencies
 
